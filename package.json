@@ -1,0 +1,52 @@
+{
+  "name": "gis_map",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --mode production",
+    "build": "vite build --mode production",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
+    "lint:eslint": "eslint . --fix",
+    "lint": "run-s lint:*",
+    "format": "prettier --write src/"
+  },
+  "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
+    "@element-plus/icons-vue": "^2.3.1",
+    "axios": "^1.10.0",
+    "element-plus": "^2.10.4",
+    "mapbox-gl": "^3.13.0",
+    "mapvue": "^0.3.3",
+    "ol": "^10.6.1",
+    "ol-contextmenu": "^5.5.0",
+    "ol-ext": "^4.0.32",
+    "pinia": "^3.0.1",
+    "sass": "^1.89.2",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
+    "vue3-openlayers": "^11.6.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "@vitejs/plugin-vue-jsx": "^4.1.2",
+    "@vitest/eslint-plugin": "^1.1.39",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/test-utils": "^2.4.6",
+    "eslint": "^9.22.0",
+    "eslint-plugin-oxlint": "^0.16.0",
+    "eslint-plugin-vue": "~10.0.0",
+    "globals": "^16.0.0",
+    "jsdom": "^26.0.0",
+    "npm-run-all2": "^7.0.2",
+    "oxlint": "^0.16.0",
+    "prettier": "3.5.3",
+    "sass-embedded": "^1.89.2",
+    "vite": "^6.3.5",
+    "vite-plugin-vue-devtools": "^7.7.2",
+    "vitest": "^3.1.1"
+  }
+}
