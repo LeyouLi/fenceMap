@@ -60,6 +60,7 @@ import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import commonApi from '@/request/api'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 // 背景图路径（需根据实际路径调整）
 const bgImage = new URL('@/assets/login_bg.jpg', import.meta.url).href
@@ -101,10 +102,13 @@ const handleLogin = async () => {
   })
   loading.value = false
   if (res.code === 200) {
+    // 获取并存储用户信息
+    const userStore = useUserStore()
+    await userStore.refreshUserInfo()
+
     ElMessage.success('登录成功')
     router.push('/')
   } else {
-    console.error('登录失败:', res?.message)
     ElMessage.error(res?.message || '登录失败，请重试')
   }
 }

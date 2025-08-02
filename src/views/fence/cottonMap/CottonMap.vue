@@ -183,7 +183,7 @@ onMounted(() => {
 
         // 生成详情页跳转URL
         const detailUrl = router.resolve({
-          name: 'details',
+          name: 'fenceDetails',
           params: { id: properties.id || geometry.ol_uid },
         }).href
 

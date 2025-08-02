@@ -9,6 +9,28 @@ const commonApi = {
       // formData: true, // 启用formData格式
     })
   },
+  // 退出登录
+  logout() {
+    return request({
+      url: '/logout',
+      method: 'get',
+    })
+  },
+  // 获取用户信息
+  queryUserInfo() {
+    return request({
+      url: '/user/getUserInfo',
+      method: 'get',
+    })
+  },
+  // 修改密码
+  changePassword(data) {
+    return request({
+      url: '/user/changePassword',
+      method: 'post',
+      data,
+    })
+  },
   //   获取区域列表
   getAreaList(data) {
     return request({

@@ -26,24 +26,28 @@ service.interceptors.request.use(
   },
 )
 
+const handleAuthExpired = (res) => {
+  if (res.code === 401) {
+    ElMessage.error('登录已过期，请重新登录')
+    // 清除可能存在的认证信息
+    localStorage.removeItem('token')
+    sessionStorage.removeItem('token')
+    // 重定向到登录页
+    router.push('/login')
+    return
+  }
+}
+
 // 响应拦截器
 service.interceptors.response.use(
   (response) => {
-    console.log('--response--', response)
     const res = response.data
+    handleAuthExpired(res)
     return res
   },
   (error) => {
     // 处理401鉴权过期状态码
-    if (error.response && error.response.status === 401) {
-      ElMessage.error('登录已过期，请重新登录')
-      // 清除可能存在的认证信息
-      localStorage.removeItem('token')
-      sessionStorage.removeItem('token')
-      // 重定向到登录页
-      router.push('/login')
-      return Promise.reject(new Error('登录已过期，请重新登录'))
-    }
+    handleAuthExpired(error?.response || {})
     ElMessage.error(error.message || '网络异常')
     return Promise.reject(error)
   },
