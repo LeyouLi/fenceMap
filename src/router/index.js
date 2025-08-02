@@ -26,6 +26,12 @@ const router = createRouter({
       component: () => import('../views/fence/cottonDetail/CottonDetail.vue'),
       props: true,
     },
+    {
+      path: '/factoryDetails/:id',
+      name: 'factoryDetails',
+      component: () => import('../views/factory/factoryDetail/FactoryDetail.vue'),
+      props: true,
+    },
   ],
 })
 
