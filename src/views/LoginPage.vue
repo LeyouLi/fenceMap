@@ -63,7 +63,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
 // 背景图路径（需根据实际路径调整）
-const bgImage = new URL('@/assets/login_bg.jpg', import.meta.url).href
+const bgImage = new URL('@/assets/images/login_bg.jpg', import.meta.url).href
 
 const router = useRouter()
 

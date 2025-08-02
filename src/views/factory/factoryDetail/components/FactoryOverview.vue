@@ -75,6 +75,7 @@ const highlightIndex = ref(1) // 高亮行索引
     font-size: 48px;
     color: #f88e1c;
     margin-left: 44px;
+    font-family: 'MVBOLI', sans-serif;
   }
 }
 

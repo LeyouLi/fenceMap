@@ -100,7 +100,7 @@ import commonApi from '@/request/api'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
-const userAvatarImage = new URL('@/assets/userProfilePicture.png', import.meta.url).href
+const userAvatarImage = new URL('@/assets/images/userProfilePicture.png', import.meta.url).href
 
 const router = useRouter()
 

@@ -23,7 +23,7 @@ import FactoryOverview from './components/FactoryOverview.vue'
 import CottonAreaChart from './components/CottonAreaChart.vue'
 import CottonAreaDetails from './components/CottonAreaDetails.vue'
 
-const bgImage = new URL('@/assets/factory_bg.jpg', import.meta.url).href
+const bgImage = new URL('@/assets/images/factory_bg.jpg', import.meta.url).href
 
 const factoryOverviewData = ref({
   cottonNum: 50,
