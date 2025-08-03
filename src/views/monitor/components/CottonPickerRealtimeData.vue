@@ -12,11 +12,13 @@
       <!-- 滚动数据列表 -->
       <div class="scroll-body" ref="scrollBody">
         <ul>
-          <li v-for="(item, index) in data" :key="index">
-            <span class="label">{{ item.deviceNum }}</span>
-            <span class="value">{{ item.areaNum || '---' }}</span>
-            <span class="value">{{ item.time }}</span>
-            <span class="value">{{ item.cottonNum }}</span>
+          <li v-for="(item, index) in dataSource" :key="index">
+            <span class="label">{{ item.carNo || '--' }}</span>
+            <span class="value">{{ item.fenceName || '--' }}</span>
+            <span class="value">{{
+              item.pickTime ? moment(item.pickTime).format('YYYY-MM-DD HH:mm:ss') : '--'
+            }}</span>
+            <span class="value">{{ item.epc || '--' }}</span>
           </li>
         </ul>
       </div>
@@ -25,71 +27,32 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useDataSourceStore } from '@/stores/dataSource'
+import moment from 'moment'
 
+const dataStore = useDataSourceStore()
 const parentContainer = ref(null)
 const scrollBody = ref(null)
-const data = ref()
-
-const dataSource = [
-  { deviceNum: '新42L4555', areaNum: '', time: '2024-10-28 17:13:00', cottonNum: 567512451726 },
-  {
-    deviceNum: '新42L4555',
-    areaNum: '12-03-6-徐新会-塔里木乡',
-    time: '2024-10-28 17:13:00',
-    cottonNum: 567512451726,
-  },
-  {
-    deviceNum: '新42L4555',
-    areaNum: '17-3-2-袁用军-塔里',
-    time: '2024-10-28 17:13:00',
-    cottonNum: 567512451726,
-  },
-  { deviceNum: '新42L4555', areaNum: '', time: '2024-10-28 17:13:00', cottonNum: 567512451726 },
-  {
-    deviceNum: '新42L4555',
-    areaNum: '12-03-6-徐新会-塔里木乡',
-    time: '2024-10-28 17:13:00',
-    cottonNum: 567512451726,
-  },
-  {
-    deviceNum: '新42L4555',
-    areaNum: '17-3-2-袁用军-塔里',
-    time: '2024-10-28 17:13:00',
-    cottonNum: 567512451726,
-  },
-  {
-    deviceNum: '新42L4555',
-    areaNum: '12-03-6-徐新会-塔里木乡',
-    time: '2024-10-28 17:13:00',
-    cottonNum: 567512451726,
-  },
-  {
-    deviceNum: '新42L4555',
-    areaNum: '17-3-2-袁用军-塔里',
-    time: '2024-10-28 17:13:00',
-    cottonNum: 567512451726,
-  },
-  {
-    deviceNum: '新42L4555',
-    areaNum: '12-03-6-徐新会-塔里木乡',
-    time: '2024-10-28 17:13:00',
-    cottonNum: 567512451726,
-  },
-  {
-    deviceNum: '新42L4555',
-    areaNum: '12-03-6-徐新会-塔里木乡',
-    time: '2024-10-28 17:13:00',
-    cottonNum: 567512451726,
-  },
-]
+const dataSource = ref()
+const { cottonPickerRealtimeData } = storeToRefs(dataStore)
 
 const initScrollBody = () => {
   const parentHeight = parentContainer.value.offsetHeight
   const headerHeight = 40
   scrollBody.value.style.height = `${parentHeight - headerHeight}px`
-  data.value = dataSource
+  dataSource.value = cottonPickerRealtimeData.value
 }
+
+watch(
+  () => cottonPickerRealtimeData.value,
+  (newVal) => {
+    if (newVal?.length) {
+      dataSource.value = newVal
+    }
+  },
+)
 
 onMounted(() => {
   initScrollBody()
@@ -158,6 +121,8 @@ onMounted(() => {
 .scroll-body .label,
 .scroll-body .value {
   text-align: center;
+  word-break: break-all;
+  white-space: normal;
   /* padding: 4px 0; */
 }
 

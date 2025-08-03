@@ -7,66 +7,61 @@
   >
     <div class="title">地块选择</div>
     <div class="select-box">
-      <el-select v-model="value" class="m-2" placeholder="Select" style="width: 300px">
+      <el-select
+        v-model="collectionAreaVal"
+        class="m-2"
+        placeholder="请选择采集区域"
+        style="width: 300px"
+      >
         <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          v-for="item in collectionAreaList"
+          :key="item.objId"
+          :label="item.name"
+          :value="item.objId"
         />
       </el-select>
       <el-select
-        v-model="value"
-        class="m-2"
-        placeholder="Select"
+        v-model="collectionAreaPlotVal"
+        :disabled="!collectionAreaVal || !collectionAreaPlotList.length"
+        placeholder="请选择地块"
         style="width: 300px; margin: 14px 0"
       >
         <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          v-for="item in collectionAreaPlotList"
+          :key="item.objId"
+          :label="item.name"
+          :value="item.objId"
         />
       </el-select>
     </div>
-    <div class="button">跳&nbsp;&nbsp;&nbsp;&nbsp;转</div>
+    <el-button
+      color="#9b4608"
+      round
+      plain
+      :disabled="!collectionAreaPlotVal"
+      style="padding: 0 50px"
+      >跳&nbsp;&nbsp;&nbsp;&nbsp;转</el-button
+    >
   </div>
 </template>
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue'
+import commonApi from '@/request/api'
 import { storeToRefs } from 'pinia'
 import { useRegionalPlotSearchStore } from '@/stores/counter'
+import { useDataSourceStore } from '@/stores/dataSource'
 
 const userStore = useRegionalPlotSearchStore()
+const dataStore = useDataSourceStore()
 const { isVisible } = storeToRefs(userStore)
-const value = ref('')
+const { collectionAreaData } = storeToRefs(dataStore)
+const collectionAreaVal = ref('')
+const collectionAreaPlotVal = ref('')
+const collectionAreaList = ref([])
+const collectionAreaPlotList = ref([])
 
-const options = [
-  {
-    value: 'Option1',
-    label: 'Option1',
-  },
-  {
-    value: 'Option2',
-    label: 'Option2',
-  },
-  {
-    value: 'Option3',
-    label: 'Option3',
-  },
-  {
-    value: 'Option4',
-    label: 'Option4',
-  },
-  {
-    value: 'Option5',
-    label: 'Option5',
-  },
-]
-
-// 设置定时器，在指定时间后隐藏组件
 const hideTimeout = ref(null)
-const HIDE_TIME = 5000 // 指定时间，单位为毫秒，这里设置为5秒
+const HIDE_TIME = 5000
 
 // 清除定时器
 const clearTimeoutOnMouseEnter = () => {
@@ -84,6 +79,8 @@ const startTimeoutOnMouseLeave = () => {
       userStore.setVisibleState(false)
       clearTimeout(hideTimeout.value)
       hideTimeout.value = null
+      collectionAreaVal.value = ''
+      collectionAreaPlotVal.value = ''
     }, HIDE_TIME)
   }
 }
@@ -92,6 +89,37 @@ watch(
   (newVal) => {
     if (newVal) {
       startTimeoutOnMouseLeave()
+    }
+  },
+)
+
+watch(
+  () => collectionAreaData.value,
+  (newVal) => {
+    if (newVal) {
+      collectionAreaList.value = newVal
+    }
+  },
+  {
+    immediate: true,
+    flush: 'post',
+  },
+)
+
+const requestAreaPlotList = async (areaId) => {
+  const { code, data } = await commonApi.getFenceList({ areaId })
+  if (code === 200) {
+    collectionAreaPlotList.value = data
+  }
+}
+
+watch(
+  () => collectionAreaVal.value,
+  (newVal) => {
+    if (newVal) {
+      collectionAreaPlotVal.value = ''
+      collectionAreaPlotList.value = []
+      requestAreaPlotList(newVal)
     }
   },
 )
@@ -136,23 +164,5 @@ onUnmounted(() => {
 .select-box {
   display: flex;
   flex-direction: column;
-}
-
-.button {
-  padding: 6px 60px;
-  background: #ffffff;
-  border-radius: 30px;
-  border: 2px solid #483f38;
-  font-weight: bold;
-  font-size: 14px;
-  color: #483f38;
-  text-align: center;
-  margin: 0 auto;
-  cursor: pointer;
-
-  &:hover {
-    color: #9b4608;
-    border: 2px solid #90450e;
-  }
 }
 </style>

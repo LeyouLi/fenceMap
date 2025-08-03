@@ -4,21 +4,21 @@
     <ul>
       <li>
         <span>
-          <span class="quota">13</span>
+          <span class="quota">{{ cottonPickerStatusData?.working || 0 }}</span>
           <span>台</span>
         </span>
         <span>在线</span>
       </li>
       <li>
         <span>
-          <span class="quota">0</span>
+          <span class="quota">{{ cottonPickerStatusData?.waiting || 0 }}</span>
           <span>台</span>
         </span>
         <span>离线</span>
       </li>
       <li>
         <span>
-          <span class="quota">13</span>
+          <span class="quota">{{ cottonPickerStatusData?.total || 0 }}</span>
           <span>台</span>
         </span>
         <span>总数</span>
@@ -26,6 +26,13 @@
     </ul>
   </div>
 </template>
+<script setup>
+import { storeToRefs } from 'pinia'
+import { useDataSourceStore } from '@/stores/dataSource'
+
+const dataStore = useDataSourceStore()
+const { cottonPickerStatusData } = storeToRefs(dataStore)
+</script>
 <style scoped>
 .cottonPickerStatus-container {
   background: rgba(5, 7, 34, 0.5);

@@ -13,12 +13,12 @@
       <!-- 滚动数据列表 -->
       <div class="scroll-body" ref="scrollBody">
         <ul>
-          <li v-for="(item, index) in data" :key="index">
-            <span class="label">{{ item.deviceNum }}</span>
-            <span class="value">{{ item.type }}</span>
-            <span class="value">{{ item.todyNum }}</span>
-            <span class="value">{{ item.total }}</span>
-            <span class="value">{{ item.status }}</span>
+          <li v-for="(item, index) in dataSource" :key="index">
+            <span class="label">{{ item.carNo || '--' }}</span>
+            <span class="value">{{ item.carBrand || '--' }}</span>
+            <span class="value">{{ item.today || '--' }}</span>
+            <span class="value">{{ item.total || '--' }}</span>
+            <span class="value">{{ item.state ? '在线' : '离线' }}</span>
           </li>
         </ul>
       </div>
@@ -27,35 +27,30 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useDataSourceStore } from '@/stores/dataSource'
 
+const dataStore = useDataSourceStore()
 const parentContainer = ref(null)
 const scrollBody = ref(null)
-const data = ref()
-const dataSource = [
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-  { deviceNum: '新42L4555', type: '约翰迪尔CP69', todyNum: 10, total: 1, status: '在线' },
-]
-
+const dataSource = ref()
+const { cottonPickerMonitorData } = storeToRefs(dataStore)
 const initScrollBody = () => {
   const parentHeight = parentContainer.value.offsetHeight
   const headerHeight = 40
   scrollBody.value.style.height = `${parentHeight - headerHeight}px`
-  data.value = dataSource
+  dataSource.value = cottonPickerMonitorData.value
 }
+
+watch(
+  () => cottonPickerMonitorData.value,
+  (newVal) => {
+    if (newVal?.length) {
+      dataSource.value = newVal
+    }
+  },
+)
 
 onMounted(() => {
   initScrollBody()
@@ -123,6 +118,8 @@ onMounted(() => {
 .scroll-body .label,
 .scroll-body .value {
   text-align: center;
+  word-break: break-all;
+  white-space: normal;
   /* padding: 4px 0; */
 }
 

@@ -11,7 +11,7 @@
       <div class="scroll-body" ref="scrollBody">
         <ul>
           <li
-            v-for="(item, index) in data"
+            v-for="(item, index) in dataSource"
             :key="index"
             @click="handleJumpToFactoryDetail(item.id)"
           >
@@ -25,24 +25,17 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { useDataSourceStore } from '@/stores/dataSource'
 
 const router = useRouter()
-
+const dataStore = useDataSourceStore()
+const { factoryRealtimeData } = storeToRefs(dataStore)
 const parentContainer = ref(null)
 const scrollBody = ref(null)
-const data = ref()
-
-const dataSource = [
-  { id: 1622, factoryName: '塔里木加工厂', count: 47 },
-  { id: 1622, factoryName: '铁门关加工厂', count: 32 },
-  { id: 1622, factoryName: '塔里木加工厂', count: 18 },
-  { id: 1622, factoryName: '铁门关加工厂', count: 56 },
-  { id: 1622, factoryName: '铁门关加工厂', count: 24 },
-  { id: 1622, factoryName: '塔里木加工厂', count: 39 },
-  { id: 1622, factoryName: '塔里木加工厂', count: 12 },
-]
+const dataSource = ref()
 
 const handleJumpToFactoryDetail = (id) => {
   router.push({
@@ -55,8 +48,17 @@ const initScrollBody = () => {
   const parentHeight = parentContainer.value.offsetHeight
   const headerHeight = 40
   scrollBody.value.style.height = `${parentHeight - headerHeight}px`
-  data.value = dataSource
+  dataSource.value = factoryRealtimeData.value
 }
+
+watch(
+  () => factoryRealtimeData.value,
+  (newVal) => {
+    if (newVal?.length) {
+      dataSource.value = newVal
+    }
+  },
+)
 
 onMounted(() => {
   initScrollBody()
@@ -128,6 +130,8 @@ onMounted(() => {
 .scroll-body .label,
 .scroll-body .value {
   text-align: center;
+  word-break: break-all;
+  white-space: normal;
   /* padding: 4px 0; */
 }
 

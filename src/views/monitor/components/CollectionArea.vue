@@ -10,9 +10,9 @@
       <!-- 滚动数据列表 -->
       <div class="scroll-body">
         <ul>
-          <li v-for="(item, index) in dataSource" :key="index">
-            <span class="label">{{ item.area }}</span>
-            <span class="value">{{ item.count }}</span>
+          <li v-for="(item, index) in collectionAreaData" :key="index">
+            <span class="label">{{ item.name || '--' }}</span>
+            <span class="value">{{ item.collectedNum }}</span>
           </li>
         </ul>
       </div>
@@ -21,20 +21,13 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useRegionalPlotSearchStore } from '@/stores/counter'
+import { useDataSourceStore } from '@/stores/dataSource'
 
 const userStore = useRegionalPlotSearchStore()
-
-const dataSource = [
-  { area: '4号片区', count: 47 },
-  { area: '5号片区', count: 32 },
-  { area: '6号片区', count: 18 },
-  { area: '7号片区', count: 56 },
-  { area: '8号片区', count: 24 },
-  { area: '9号片区', count: 39 },
-  { area: '10号片区', count: 12 },
-]
-
+const dataStore = useDataSourceStore()
+const { collectionAreaData } = storeToRefs(dataStore)
 const handleShowRegionalPlotSearch = () => {
   userStore.setVisibleState(true)
 }
@@ -102,6 +95,8 @@ const handleShowRegionalPlotSearch = () => {
 .scroll-body .label,
 .scroll-body .value {
   text-align: center;
+  word-break: break-all;
+  white-space: normal;
   /* padding: 4px 0; */
 }
 

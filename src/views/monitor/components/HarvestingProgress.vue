@@ -4,19 +4,26 @@
     <ul>
       <li>
         <span>总卷数</span>
-        <span class="quota">810</span>
+        <span class="quota">{{ harvestingProgressData?.totalBale || '--' }}</span>
       </li>
       <li>
         <span>已采收亩数</span>
-        <span>810</span>
+        <span>{{ harvestingProgressData?.harvested || '--' }}</span>
       </li>
       <li>
         <span>待采收亩数</span>
-        <span>810</span>
+        <span>{{ harvestingProgressData?.waitHarvest || '--' }}</span>
       </li>
     </ul>
   </div>
 </template>
+<script setup>
+import { storeToRefs } from 'pinia'
+import { useDataSourceStore } from '@/stores/dataSource'
+
+const dataStore = useDataSourceStore()
+const { harvestingProgressData } = storeToRefs(dataStore)
+</script>
 <style scoped>
 .harvestingProgress-container {
   background: rgba(5, 7, 34, 0.5);
