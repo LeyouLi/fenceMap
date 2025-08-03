@@ -2,12 +2,14 @@
 import { onMounted, ref, onUnmounted } from 'vue'
 import Header from './common/header/Header.vue'
 import CottonMap from './fence/cottonMap/CottonMap.vue'
+import MonitorInformationPanel from './monitor/MonitorInformationPanel.vue'
 </script>
 
 <template>
   <div class="main">
     <Header />
     <CottonMap />
+    <MonitorInformationPanel />
   </div>
 </template>
 

@@ -239,6 +239,7 @@ onMounted(() => {
   height: 120px;
   z-index: 1000;
   background: linear-gradient(180deg, #18728c 0%, rgba(70, 101, 135, 0.02) 100%);
+  pointer-events: none;
 }
 
 .header-container {
@@ -267,6 +268,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   height: 100%;
+  pointer-events: auto;
 }
 
 .user-avatar-wrapper {

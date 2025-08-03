@@ -12,6 +12,7 @@ import { Style, Fill, Stroke, Circle, Text } from 'ol/style'
 import { fromLonLat } from 'ol/proj'
 import { getCenter } from 'ol/extent'
 import { Point } from 'ol/geom'
+import { defaults as defaultControls } from 'ol/control'
 import Overlay from 'ol/Overlay'
 import { useRouter } from 'vue-router'
 import commonApi from '@/request/api'
@@ -154,6 +155,9 @@ onMounted(() => {
       center: fromLonLat([86.33, 41.337428]),
       zoom: 12,
       maxZoom: 19,
+    }),
+    controls: defaultControls({
+      zoom: false, // 禁用默认的缩放控件
     }),
   })
 
