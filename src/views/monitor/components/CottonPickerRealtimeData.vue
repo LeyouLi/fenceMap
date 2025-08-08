@@ -68,7 +68,7 @@ onMounted(() => {
   width: fit-content;
   padding: 14px 24px;
   margin: 0 30px;
-  flex: 1;
+  flex: 2;
   pointer-events: auto;
 }
 

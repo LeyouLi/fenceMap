@@ -34,6 +34,7 @@
       title="修改密码"
       v-model="passwordDialogVisible"
       width="30%"
+      lock-scroll
       :close-on-click-modal="false"
     >
       <el-form
@@ -242,6 +243,10 @@ onMounted(() => {
   pointer-events: none;
 }
 
+:deep(.el-overlay) {
+  pointer-events: auto;
+}
+
 .header-container {
   display: flex;
   justify-content: flex-end;
@@ -268,6 +273,10 @@ onMounted(() => {
   display: flex;
   align-items: center;
   height: 100%;
+  pointer-events: auto;
+}
+
+:deep(.user-manage-dialog) {
   pointer-events: auto;
 }
 
