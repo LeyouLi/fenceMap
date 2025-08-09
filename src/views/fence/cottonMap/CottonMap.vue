@@ -38,8 +38,8 @@ const getGisMapData = async () => {
 }
 
 onMounted(() => {
-  getDeviceState()
-  getGisMapData()
+  // getDeviceState()
+  // getGisMapData()
   // 1. 基础地图（使用高德地图）
   const baseLayer = new TileLayer({
     source: new XYZ({

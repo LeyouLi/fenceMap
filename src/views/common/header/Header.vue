@@ -276,10 +276,6 @@ onMounted(() => {
   pointer-events: auto;
 }
 
-:deep(.user-manage-dialog) {
-  pointer-events: auto;
-}
-
 .user-avatar-wrapper {
   display: flex;
   align-items: center;

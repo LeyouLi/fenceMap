@@ -21,7 +21,9 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: env.VITE_APP_API_URL || 'http://121.37.81.250',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
+          rewrite: (path) => {
+            return path.replace(/^\/api/, '')
+          },
           // 添加以下配置
           configure: (proxy, options) => {
             proxy.on('proxyReq', (proxyReq, req, res) => {

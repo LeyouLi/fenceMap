@@ -2,9 +2,12 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import router from '../router/index.js' // 导入路由实例
 
+const baseURL = import.meta.env.PROD
+  ? import.meta.env.VITE_APP_API_URL || 'http://121.37.81.250' // 生产环境直接使用后端地址
+  : '/api'
 // 创建axios实例
 const service = axios.create({
-  baseURL: '/api',
+  baseURL,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
