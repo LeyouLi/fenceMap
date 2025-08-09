@@ -8,10 +8,12 @@
     <div class="title">地块选择</div>
     <div class="select-box">
       <el-select
+        ref="areaSelectRef"
         v-model="collectionAreaVal"
         class="m-2"
         placeholder="请选择采集区域"
         style="width: 300px"
+        :teleported="false"
       >
         <el-option
           v-for="item in collectionAreaList"
@@ -21,10 +23,12 @@
         />
       </el-select>
       <el-select
+        ref="plotSelectRef"
         v-model="collectionAreaPlotVal"
         :disabled="!collectionAreaVal || !collectionAreaPlotList.length"
         placeholder="请选择地块"
         style="width: 300px; margin: 14px 0"
+        :teleported="false"
       >
         <el-option
           v-for="item in collectionAreaPlotList"
@@ -54,12 +58,14 @@ import { useDataSourceStore } from '@/stores/dataSource'
 const userStore = useRegionalPlotSearchStore()
 const dataStore = useDataSourceStore()
 const { isVisible } = storeToRefs(userStore)
-const { collectionAreaData } = storeToRefs(dataStore)
+const { collectionAreaData, collectionAreaSelectedData } = storeToRefs(dataStore)
 const collectionAreaVal = ref('')
 const collectionAreaPlotVal = ref('')
 const collectionAreaList = ref([])
 const collectionAreaPlotList = ref([])
 
+const areaSelectRef = ref(null)
+const plotSelectRef = ref(null)
 const hideTimeout = ref(null)
 const HIDE_TIME = 5000
 
@@ -75,12 +81,20 @@ const clearTimeoutOnMouseEnter = () => {
 const startTimeoutOnMouseLeave = () => {
   if (!hideTimeout.value) {
     hideTimeout.value = setTimeout(() => {
+      if (areaSelectRef.value) {
+        areaSelectRef.value.blur()
+      }
+      if (plotSelectRef.value) {
+        plotSelectRef.value.blur()
+      }
+
       isVisible.value = false
       userStore.setVisibleState(false)
       clearTimeout(hideTimeout.value)
       hideTimeout.value = null
       collectionAreaVal.value = ''
       collectionAreaPlotVal.value = ''
+      dataStore.resetCollectionAreaSelectedData()
     }, HIDE_TIME)
   }
 }
@@ -98,6 +112,19 @@ watch(
   (newVal) => {
     if (newVal) {
       collectionAreaList.value = newVal
+    }
+  },
+  {
+    immediate: true,
+    flush: 'post',
+  },
+)
+
+watch(
+  () => collectionAreaSelectedData.value,
+  (newVal) => {
+    if (newVal) {
+      collectionAreaVal.value = newVal?.objId || ''
     }
   },
   {

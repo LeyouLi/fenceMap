@@ -9,7 +9,7 @@ export const useDataSourceStore = defineStore('dataSource', () => {
   const cottonPickerMonitorData = ref([])
   const cottonPickerRealtimeData = ref([])
   const factoryRealtimeData = ref({})
-
+  const collectionAreaSelectedData = ref({})
   // 统一的数据更新方法
   const updateData = (dataRef, data) => {
     dataRef.value = data
@@ -25,6 +25,8 @@ export const useDataSourceStore = defineStore('dataSource', () => {
     if (payload.cottonPickerRealtime)
       updateData(cottonPickerRealtimeData, payload.cottonPickerRealtime)
     if (payload.factoryRealtime) updateData(factoryRealtimeData, payload.factoryRealtime)
+    if (payload.collectionAreaSelected)
+      updateData(collectionAreaSelectedData, payload.collectionAreaSelected)
   }
 
   // 数据重置方法
@@ -37,6 +39,10 @@ export const useDataSourceStore = defineStore('dataSource', () => {
     factoryRealtimeData.value = {}
   }
 
+  const resetCollectionAreaSelectedData = () => {
+    collectionAreaSelectedData.value = {}
+  }
+
   return {
     // 状态
     cottonPickerStatusData,
@@ -45,9 +51,11 @@ export const useDataSourceStore = defineStore('dataSource', () => {
     cottonPickerMonitorData,
     cottonPickerRealtimeData,
     factoryRealtimeData,
+    collectionAreaSelectedData,
 
     // 方法
     batchUpdate,
     resetData,
+    resetCollectionAreaSelectedData,
   }
 })

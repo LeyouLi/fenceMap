@@ -39,11 +39,11 @@ const requestData = async () => {
 
       // 批量更新store数据
       dataStore.batchUpdate({
-        cottonPickerStatus: pickerStateRes.data,
-        harvestingProgress: totalHarvestRes.data,
-        collectionArea: areaListRes.data,
-        cottonPickerMonitor: pickerMonitorRes.pageInfo.list,
-        cottonPickerRealtime: pickerLiveDataRes.pageInfo.list,
+        cottonPickerStatus: pickerStateRes?.data,
+        harvestingProgress: totalHarvestRes?.data,
+        collectionArea: areaListRes?.data,
+        cottonPickerMonitor: pickerMonitorRes?.pageInfo?.list,
+        cottonPickerRealtime: pickerLiveDataRes?.pageInfo?.list,
         factoryRealtime: [
           { id: 1620, factoryName: '塔里木加工厂1', count: 47 },
           { id: 1621, factoryName: '铁门关加工厂2', count: 32 },

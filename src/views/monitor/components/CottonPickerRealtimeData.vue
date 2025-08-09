@@ -61,6 +61,7 @@ onMounted(() => {
 
 <style scoped>
 .cottonPickerMonitor-container {
+  max-height: 300px;
   background: rgba(5, 7, 34, 0.5);
   border-radius: 10px;
   border: 4px solid rgba(255, 255, 255, 0.75);

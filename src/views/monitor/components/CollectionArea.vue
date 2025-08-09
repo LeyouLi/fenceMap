@@ -1,5 +1,5 @@
 <template>
-  <div class="collectionArea-container" @click="handleShowRegionalPlotSearch">
+  <div class="collectionArea-container">
     <div class="title">采集区域</div>
     <div class="table-wrapper">
       <!-- 固定表头 -->
@@ -10,7 +10,11 @@
       <!-- 滚动数据列表 -->
       <div class="scroll-body">
         <ul>
-          <li v-for="(item, index) in collectionAreaData" :key="index">
+          <li
+            v-for="(item, index) in collectionAreaData"
+            :key="index"
+            @click="handleShowRegionalPlotSearch(item)"
+          >
             <span class="label">{{ item.name || '--' }}</span>
             <span class="value">{{ item.collectedNum }}</span>
           </li>
@@ -28,7 +32,10 @@ import { useDataSourceStore } from '@/stores/dataSource'
 const userStore = useRegionalPlotSearchStore()
 const dataStore = useDataSourceStore()
 const { collectionAreaData } = storeToRefs(dataStore)
-const handleShowRegionalPlotSearch = () => {
+const handleShowRegionalPlotSearch = (areaDate) => {
+  dataStore.batchUpdate({
+    collectionAreaSelected: areaDate,
+  })
   userStore.setVisibleState(true)
 }
 </script>
@@ -43,7 +50,6 @@ const handleShowRegionalPlotSearch = () => {
   padding: 14px 24px;
   max-height: 200px;
   pointer-events: auto;
-  cursor: pointer;
 }
 
 .title {
@@ -90,6 +96,11 @@ const handleShowRegionalPlotSearch = () => {
 
 .scroll-body li {
   display: contents;
+  cursor: pointer;
+
+  &:hover {
+    color: rgba(248, 142, 28, 1);
+  }
 }
 
 .scroll-body .label,

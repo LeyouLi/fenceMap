@@ -29,9 +29,19 @@ service.interceptors.request.use(
   },
 )
 
+let isAuthExpiredAlertShown = false
+
 const handleAuthExpired = (res) => {
   if (res.code === 401) {
-    ElMessage.error('登录已过期，请重新登录')
+    if (!isAuthExpiredAlertShown) {
+      ElMessage.error('登录已过期，请重新登录')
+      isAuthExpiredAlertShown = true
+
+      setTimeout(() => {
+        isAuthExpiredAlertShown = false
+      }, 3000)
+    }
+
     // 清除可能存在的认证信息
     localStorage.removeItem('token')
     sessionStorage.removeItem('token')
